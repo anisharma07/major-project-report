@@ -1,0 +1,136 @@
+\chapter{System Design and Architecture}
+\noindent\rule{\linewidth}{2pt}
+
+\section{Proposed Solution}
+We propose a full-stack implementation that integrates three key components to create a comprehensive parking management system:
+
+\begin{enumerate}
+    \item \textbf{Edge Processing:} Using Raspberry Pi nodes to run lightweight YOLO models (YOLOv8n) for initial detection at the parking facility level.
+    \item \textbf{Cloud Architecture:} A centralized Google Cloud server (Debian 12 VM) to manage data aggregation, storage, and API services for multi-location support.
+    \item \textbf{User Interface:} A React.js frontend and mobile application that directs users to the nearest available spot based on real-time data.
+\end{enumerate}
+
+\noindent This hybrid architecture balances computational efficiency with scalability, allowing the system to operate reliably even with intermittent connectivity while supporting centralized management for larger deployments.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=1.0\linewidth]{images/our-model.png}
+    \caption{Proposed System Architecture}
+    \label{fig:proposed_architecture}
+\end{figure}
+
+\section{System Architecture Overview}
+
+The ParkLot system follows a three-tier architecture:
+
+\subsection{Edge Tier}
+\begin{itemize}
+    \item \textbf{Camera Input:} USB webcam or CCTV feed capturing parking area
+    \item \textbf{Local Processing:} Raspberry Pi running YOLOv8n for real-time detection
+    \item \textbf{Occupancy Calculation:} Determines available spots based on detection results
+    \item \textbf{Data Transmission:} Sends occupancy status to cloud at regular intervals
+\end{itemize}
+
+\subsection{Cloud Tier}
+\begin{itemize}
+    \item \textbf{API Server:} Python Flask backend handling requests from edge devices and users
+    \item \textbf{Database:} MongoDB storing parking location data, occupancy history, and user information
+    \item \textbf{Business Logic:} Proximity-based parking search, availability aggregation
+    \item \textbf{Authentication:} User management and access control
+\end{itemize}
+
+\subsection{Client Tier}
+\begin{itemize}
+    \item \textbf{Web Dashboard:} React.js interface for administrators and real-time monitoring
+    \item \textbf{Mobile Application:} User-facing app for parking discovery and navigation
+    \item \textbf{Navigation Integration:} Links to mapping services for turn-by-turn directions
+\end{itemize}
+
+\section{Hardware Specifications}
+
+\subsection{Edge Device Configuration}
+The edge processing is performed on cost-effective, readily available hardware:
+
+\begin{itemize}
+    \item \textbf{Device:} Raspberry Pi 3B+ 
+    \item \textbf{Processor:} Broadcom BCM2837B0, Cortex-A53 (ARMv8) 64-bit SoC @ 1.4GHz
+    \item \textbf{Memory:} 1GB LPDDR2 SDRAM
+    \item \textbf{Camera:} Logitech 720p USB Webcam
+    \item \textbf{Storage:} 32GB microSD card
+    \item \textbf{Power:} 5V/2.5A micro USB power supply
+    \item \textbf{Connectivity:} Dual-band wireless LAN (2.4GHz and 5GHz)
+\end{itemize}
+
+\subsection{Model Training Hardware}
+Model fine-tuning was performed on higher-performance hardware:
+
+\begin{itemize}
+    \item \textbf{Primary:} NVIDIA P100 GPU (Kaggle cloud environment)
+    \item \textbf{Secondary:} NVIDIA RTX 4060 (8GB VRAM)
+    \item \textbf{Tertiary:} NVIDIA RTX 3050 (4GB VRAM)
+\end{itemize}
+
+\section{Cloud Server Specifications}
+
+The backend infrastructure is hosted on Google Cloud Platform to ensure reliability and scalability:
+
+\subsection{Virtual Machine Configuration}
+\begin{itemize}
+    \item \textbf{Instance Type:} c4-standard-2 (Compute-optimized)
+    \item \textbf{Processor:} Intel Emerald Rapids (4th Gen Xeon)
+    \item \textbf{vCPUs:} 2 virtual cores
+    \item \textbf{Memory:} 7GB RAM
+    \item \textbf{Operating System:} Debian 12 (Bookworm)
+    \item \textbf{Storage:} 50GB Hyperdisk Balanced
+    \item \textbf{Region:} us-central1 (for optimal latency)
+\end{itemize}
+
+\subsection{Software Stack}
+\begin{itemize}
+    \item \textbf{Backend Framework:} Python Flask (RESTful API)
+    \item \textbf{Database:} MongoDB (NoSQL for flexible schema)
+    \item \textbf{Containerization:} Docker (for consistent deployment)
+    \item \textbf{Frontend:} React.js (responsive web interface)
+    \item \textbf{Web Server:} Nginx (reverse proxy and load balancing)
+    \item \textbf{Process Manager:} PM2 (for application monitoring)
+\end{itemize}
+
+\section{Data Flow and Communication}
+
+\subsection{Detection Pipeline}
+\begin{enumerate}
+    \item Camera captures frame from parking area
+    \item YOLOv8n processes frame and detects vehicles
+    \item Parking grid overlay determines occupancy status
+    \item Results aggregated and sent to cloud API endpoint
+    \item Cloud updates database with current availability
+    \item User queries retrieve real-time data from database
+\end{enumerate}
+
+\subsection{API Endpoints}
+The Flask backend exposes several key endpoints:
+
+\begin{itemize}
+    \item \texttt{POST /parking/updateRaw} - Edge device uploads detection results
+    \item \texttt{GET /parking/nearby} - User queries parking locations by coordinates
+    \item \texttt{GET /parking/availability/:id} - Fetch real-time availability for location
+    \item \texttt{POST /user/register} - New user registration
+    \item \texttt{POST /user/login} - User authentication
+\end{itemize}
+
+\section{Edge Device Configuration}
+
+Each Raspberry Pi edge node operates with the following configuration file:
+
+\begin{verbatim}
+{
+    "camera_type": "web_upload",
+    "api_endpoint": "http://34.42.200.32/parking/updateRaw",
+    "camera_id": "nith_main_parking",
+    "interval": 60,
+    "save_local_copy": true,
+    "model_path": "models/yolov8n_custom.pt",
+    "confidence_threshold": 0.5
+}
+\end{verbatim}
+

@@ -1,0 +1,14 @@
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {3.1}{\ignorespaces Proposed System Architecture}}{9}{figure.3.1}%
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {5.1}{\ignorespaces ParkLot Management Dashboard - comprehensive admin interface displaying real-time parking statistics, system health monitoring, and location management capabilities. The dashboard provides intuitive coordinate mapping tools for defining parking spot boundaries, API management for monitoring system endpoints and performance metrics, and integrated camera feed monitoring with real-time parking lot imagery for visual verification of detection accuracy.}}{23}{figure.5.1}%
+\contentsline {figure}{\numberline {5.2}{\ignorespaces ParkLot mobile application interface - intuitive user interface showing nearby parking locations with real-time availability status and navigation options.}}{25}{figure.5.2}%
+\contentsline {figure}{\numberline {5.3}{\ignorespaces ParkLot mobile application features - detailed view of parking location information, spot availability visualization, parking reservation system, and user-friendly navigation controls.}}{25}{figure.5.3}%
+\contentsline {figure}{\numberline {5.4}{\ignorespaces YOLOv8n detection results on NITH campus parking area - showing accurate vehicle detection with bounding boxes under optimal lighting conditions.}}{26}{figure.5.4}%
+\contentsline {figure}{\numberline {5.5}{\ignorespaces YOLOv8n detection in varying conditions - demonstrating model robustness across different lighting and parking configurations at NIT Hamirpur campus.}}{27}{figure.5.5}%
+\contentsline {figure}{\numberline {5.6}{\ignorespaces Edge deployment performance comparison (Part 1) - YOLOv8n base model performance showing inference speed and detection accuracy metrics on edge devices.}}{27}{figure.5.6}%
+\contentsline {figure}{\numberline {5.7}{\ignorespaces Edge deployment performance comparison (Part 2) - Fine-tuned YOLOv8n model demonstrating improved detection capabilities after training on custom NIT Hamirpur dataset, with comparative analysis of accuracy and speed trade-offs.}}{28}{figure.5.7}%
+\addvspace {10\p@ }

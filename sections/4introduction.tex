@@ -1,0 +1,52 @@
+\chapter{Introduction}
+% Line
+\noindent\rule{\linewidth}{2pt} 
+
+\section{Overview}
+As urban populations grow, efficient mobility becomes a paramount challenge. Parking management is a crucial aspect of this, yet it remains largely inefficient in many cities. \textbf{ParkLot} aims to solve this by introducing a smart detection system that eliminates the need for drivers to circle endlessly looking for spots.
+
+\section{Motivation}
+The motivation for this project stems from three key factors:
+\begin{itemize}
+    \item \textbf{Traffic Reduction:} Approximately 30\% of urban traffic is attributed to drivers searching for parking. Smart detection can significantly alleviate this congestion.
+    \item \textbf{Environmental Impact:} Reducing the time spent searching for parking directly lowers fuel consumption and the associated carbon footprint.
+    \item \textbf{Cost Efficiency:} Traditional smart parking relies on expensive individual sensors for each spot. Our approach unlocks intelligence from existing CCTV infrastructure, removing the need for new sensor hardware.
+\end{itemize}
+
+\section{Problem Statement}
+The fundamental goal of this project is to achieve highly effective parking space detection using computer vision. The specific challenges addressed include:
+\begin{itemize}
+    \item \textbf{Aerial View Occlusions:} The system must process aerial datasets which provide a wide view but are susceptible to occlusions where larger vehicles may block the view of empty spots.
+    \item \textbf{Model Selection:} Determining which version of the YOLO family (v5, v7, v8, v9) offers the optimal balance between accuracy and real-time performance for this specific domain.
+\end{itemize}
+
+\section{Objectives}
+The primary objectives of the ParkLot project are:
+
+\begin{enumerate}
+    \item Develop a vision-based vehicle detection system using YOLO framework capable of accurately identifying vehicle presence and determining parking slot occupancy in real-time.
+    
+    \item Create an intelligent parking management platform that processes CCTV feeds to provide live parking availability information across designated parking zones.
+    
+    \item Design and implement a mobile application interface that enables users to discover nearby parking facilities, view real-time availability, and navigate to vacant spots.
+    
+    \item Deploy a proof-of-concept implementation at NIT Hamirpur campus to validate system performance in real-world conditions including outdoor environments and irregular parking layouts.
+    
+    \item Optimize the system for edge computing deployment (Raspberry Pi) to minimize latency and ensure functionality with intermittent internet connectivity.
+    
+    \item Demonstrate measurable improvements in parking detection accuracy and inference speed suitable for real-time applications.
+\end{enumerate}
+
+\section{Report Organization}
+
+The remainder of this report is organized as follows:
+
+\textbf{Chapter 2: Literature Review} examines existing research in parking detection, YOLO architecture evolution, and comparison of different approaches.
+
+\textbf{Chapter 3: System Design and Architecture} details the overall system design, hardware specifications, cloud infrastructure, and component interactions.
+
+\textbf{Chapter 4: Methodology} describes dataset preparation, model training procedures, and fine-tuning strategies.
+
+\textbf{Chapter 5: Results and Analysis} presents performance metrics, accuracy analysis, and comparative evaluation of different YOLO models.
+
+\textbf{Chapter 6: Conclusion and Future Work} summarizes achievements, discusses system capabilities, and outlines future enhancements.

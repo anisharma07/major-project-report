@@ -1,0 +1,52 @@
+\chapter{Literature Review}
+\noindent\rule{\linewidth}{2pt}
+
+\noindent We reviewed existing solutions to identify gaps and select the best technologies for ParkLot. The literature reveals significant progress in parking detection using computer vision and deep learning approaches, though challenges remain in real-time performance and cost-effective deployment.
+
+\section{Deep Learning for Parking Detection}
+
+Amato et al. (2017) \cite{amato2017} pioneered the use of deep Convolutional Neural Networks (CNNs) for parking lot occupancy detection, introducing the mAlexNet architecture trained on the CNRPark-Ext and PKLot datasets. Their work demonstrated that deep learning could effectively classify parking space occupancy from aerial views. However, their approach focused on binary classification (occupied/vacant) rather than full object detection, limiting its ability to handle dynamic parking layouts.
+
+\section{YOLO-Based Approaches}
+
+Rafique et al. (2023) \cite{rafique2023} advanced the field by implementing YOLOv5 for real-time parking management, achieving 99.5\% accuracy. Their framework optimized the detection pipeline for real-time performance, but required substantial computational resources, making edge deployment challenging. The work highlighted the trade-off between accuracy and computational efficiency in production environments.
+
+\noindent Ahad and Kidwai (2025) \cite{ahad2025} integrated YOLOv4 with behavioral data analysis to reduce parking search time in congested urban environments. By combining occupancy detection with predictive allocation based on historical patterns, they demonstrated measurable improvements in user experience. However, their approach requires extensive behavioral data collection, which may raise privacy concerns and complicate initial deployment.
+
+\section{Comparative Analysis of YOLO Variants}
+
+Shreeram et al. (2025) \cite{hudda2025} conducted a comprehensive comparative study of YOLO family models (YOLOv5, YOLOv7, YOLOv8, YOLOv9) for smart parking space detection using aerial images. Their findings indicated that YOLOv9 achieved the highest mean Average Precision (mAP), while YOLOv8 offered the best balance between accuracy and inference speed. Notably, they identified aerial occlusions as a persistent challenge when larger vehicles obscure adjacent parking spaces.
+
+\section{Edge Computing and Smart Parking}
+
+Recent research has emphasized the importance of edge computing for reducing latency and enabling offline operation in smart parking systems. Liu et al. (2024) demonstrated that lightweight models deployed on edge devices like Raspberry Pi can achieve near-real-time performance with careful optimization, though at the cost of some accuracy compared to cloud-based solutions.
+
+\section{Gap Analysis}
+
+While existing research has made significant strides, several gaps remain:
+
+\begin{itemize}
+    \item \textbf{Cost-Effective Deployment:} Most solutions require either expensive sensors or high-end computing infrastructure, limiting widespread adoption.
+    \item \textbf{Hybrid Architecture:} Few studies have explored optimal distribution of processing between edge devices and cloud infrastructure for parking management.
+    \item \textbf{Real-World Validation:} Limited deployment in actual parking facilities with diverse conditions (weather, lighting, irregular layouts).
+    \item \textbf{Custom Dataset Requirements:} Performance on standard datasets doesn't always translate to specific deployment environments.
+\end{itemize}
+
+\noindent ParkLot addresses these gaps by implementing a hybrid edge-cloud architecture using fine-tuned YOLO models optimized for both accuracy and real-time performance on resource-constrained devices, validated through deployment at NIT Hamirpur campus.
+
+\section{Comparison of Existing Approaches}
+
+\begin{table}[htbp]
+\centering
+\caption{Comprehensive Comparison of Parking Detection Approaches}
+\scriptsize
+\begin{tabular}{p{1.3cm}p{3.2cm}p{2.2cm}p{1.8cm}p{2.5cm}p{3.0cm}}
+\toprule
+\textbf{Ref \& Year} & \textbf{Title} & \textbf{Venue} & \textbf{Model} & \textbf{Findings} & \textbf{Analysis (Pros/Cons)} \\ \midrule
+Amato et al., 2017 \cite{amato2017} & Deep learning for decentralized parking lot occupancy detection & Expert Systems with Applications & mAlexNet (CNN) & CNRPark-EXT, PKLot & + Lightweight (RPi) \newline -- Binary only \\ \midrule
+Rafique et al., 2023 \cite{rafique2023} & Optimized real-time parking management framework using deep learning & Expert Systems with Applications & YOLOv5 & 99.5\% acc, 45 FPS & + High accuracy \newline -- High compute \\ \midrule
+Ahad and Kidwai, 2025 \cite{ahad2025} & YOLO based approach for real-time parking detection... & Innovative Infrastructure Solutions & YOLOv4 + Behavioral & Reduces search time & + Better recall \newline -- Needs behavior data \\ \midrule
+Shreeram et al., 2025 \cite{hudda2025} & Smart Parking Space Availability Detection Using Aerial Images... & AINA-2025 & YOLO Family (v5-v9) & YOLOv9 best mAP & + Large-area coverage \newline -- Aerial occlusions \\ \midrule
+\textbf{ParkLot (Ours)} & \textbf{--} & \textbf{--} & \textbf{YOLOv8n} & \textbf{Custom NIT Hamirpur dataset} & \textbf{+ Cost-effective \newline + Real-world validation} \\ \bottomrule
+\end{tabular}
+\end{table}

@@ -1,0 +1,61 @@
+% Khushwant (khushwantk567@gmail.com)
+% NIT Hamirpur 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\documentclass[12pt,a4paper]{report}
+\usepackage[pagestyles]{titlesec}
+\input{file-setup}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+% Roman numbering for preliminary pages
+\pagenumbering{roman}
+
+% Front Title Page
+\input{front}
+
+% All other pages in sections folder
+% Copyright Page
+\input{sections/copyright}
+
+\input{sections/1declaration}
+\input{sections/2acknow}
+\input{sections/3abstract}
+
+
+% Change name of TOC by replacing - {Table of Contents}
+\renewcommand{\contentsname}{Table of Contents}
+\tableofcontents
+\newpage
+
+% List of figures and Tables in one page - Uncomment the minipage
+% \begin{minipage}{\textwidth}
+\listoffigures
+\listoftables
+% \end{minipage}
+
+% To remove the word "Chapter", uncomment both lines if want Chapter written
+\titlespacing{\chapter}{0pt}{-25pt}{1cm}
+\titleformat{\chapter}[display]{\normalfont\bfseries}{}{0pt}{\Huge}
+
+% Arabic numbering for main chapters
+\pagenumbering{arabic}
+
+\input{sections/4introduction}
+
+\input{sections/5literature}
+
+\input{sections/6system_design}
+
+\input{sections/7methodology}
+
+\input{sections/8results}
+
+\input{sections/9conclusion}
+
+% Bibliograpy
+\input{sections/ref}
+% Annexure
+\input{sections/extra}
+
+\end{document}

@@ -1,0 +1,88 @@
+
+% Adapted from an original template by Hlyni Arnórssyni, Reykjavik University, Iceland
+%
+% ------------------------------ SETTINGS
+
+\usepackage{geometry}
+\usepackage{tocloft}
+\geometry{
+	paper=a4paper, % Paper size
+	top=25mm, % Top margin
+	bottom=25mm, % Bottom margin
+	left=38mm, % Left margin (NIT Hamirpur requirement)
+	right=25mm, % Right margin
+	headheight=0.75cm, % Header height
+	footskip=1.5cm, % Space from the bottom margin to the baseline of the footer
+	headsep=0.75cm, % Space from the top margin to the baseline of the header
+	%showframe, % Uncomment to show how the type block is set on the page
+}
+
+\usepackage{blindtext}
+%-------------------------------- Character encoding ----------------------------
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+
+%-------------------------------- Times New Roman Font ----------------------------
+\usepackage{mathptmx} % Times New Roman font
+
+%----------------------------- Mathematics packages from AMS ---------------
+
+\usepackage{amsmath, amsfonts, amsthm, amssymb}
+\usepackage{braket, nicefrac}
+
+% ----------- International System of Units
+\usepackage{siunitx}
+
+%------------------------------ Lists / numbers -------------------------
+\usepackage{enumitem, multicol}
+
+%------------------------------- Figure insertions --------------
+\usepackage{graphicx, float}  % Use option [H] to force the placement of a figure
+\usepackage{keystroke}
+\usepackage{pgfplots}\usepgfplotslibrary{units}\pgfplotsset{compat=1.16}
+\usepackage{booktabs} % For nicer tables
+
+%------------------------------- Line Spacing --------------
+\usepackage{setspace}
+\setstretch{1.5} % 1.5 line spacing as per NIT Hamirpur format
+
+%------------------------------- Depth of the ToC --------------
+\setcounter{tocdepth}{2}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%% Hyperlink References %%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=black,
+    filecolor=black,
+    urlcolor=black,
+    citecolor=black,
+    pdfborder={0 0 0}
+}
+
+%--------------------% Storage Path for images %-----------------%
+\graphicspath{{graphics/}{Graphics/}{./}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%% Environments %%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newenvironment{keywords}{
+    \begin{center}
+    \textbf{Keywords}
+    \vspace{0.5cm}
+    \par
+    \begin{minipage}{0.8\linewidth}}{\end{minipage}
+    \noindent\ignorespaces
+    \end{center}
+}
+
+\renewcommand\cftaftertoctitle{\par\noindent\rule{\textwidth}{2pt}\par\vskip -3.5em}
+\renewcommand\cftafterloftitle{\par\noindent\rule{\textwidth}{2pt}\par\vskip-3.0em}
+\renewcommand\cftafterlottitle{\par\noindent\rule{\textwidth}{2pt}\par\vskip-3.0em}
+
+% Comment / Uncomment to get box on links
+% \urlstyle{same}
+% \hypersetup{ 
+%      colorlinks=true, 
+%      linkcolor=blue,       
+%      urlcolor=blue, 
+%      } 

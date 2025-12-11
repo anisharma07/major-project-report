@@ -1,0 +1,226 @@
+\chapter{Results and Analysis}
+\noindent\rule{\linewidth}{2pt}
+
+\section{Performance Metrics}
+
+The trained models were evaluated based on multiple metrics to assess their suitability for real-time parking detection across different deployment scenarios.
+
+\subsection{Evaluation Criteria}
+
+\begin{itemize}
+    \item \textbf{Precision:} Ratio of true positive detections to all positive detections (accuracy of detected vehicles)
+    \item \textbf{Recall:} Ratio of true positive detections to all actual vehicles (completeness of detection)
+    \item \textbf{F1-Score:} Harmonic mean of precision and recall (balanced performance metric)
+    \item \textbf{Inference Time:} Processing time per frame in milliseconds
+    \item \textbf{mAP@0.5:} Mean Average Precision at IoU threshold 0.5
+\end{itemize}
+
+\section{Model Performance Comparison}
+
+Table \ref{tab:model_performance} presents the quantitative results for each trained model variant.
+
+\begin{table}[htbp]
+\centering
+\caption{Comparative Performance of YOLO Model Variants}
+\label{tab:model_performance}
+\begin{tabular}{@{}lcccccc@{}}
+\toprule
+\textbf{Model} & \textbf{Precision} & \textbf{Recall} & \textbf{Inf. Time (ms)} & \textbf{FPS} & \textbf{F1-Score} \\ \midrule
+YOLOv8m-cnr-subset & 0.920 & 0.935 & 257 & 3.89 & 0.927 \\
+YOLOv8m-parking-subset & 0.900 & 0.920 & 280.03 & 3.57 & 0.910 \\
+YOLOv8l-cnr-subset & 0.935 & 0.950 & 387.69 & 2.58 & 0.942 \\
+YOLOv8l-parking-subset & 0.915 & 0.930 & 486.04 & 2.06 & 0.922 \\
+\textbf{YOLOv8n-custom (Pi)} & \textbf{0.990} & \textbf{0.882} & \textbf{7.7} & \textbf{100} & \textbf{0.933} \\
+YOLOv8n-cnr-subset & 0.865 & 0.895 & 56.79 & 50 & 0.880 \\ \bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Analysis of Results}
+
+\subsubsection{YOLOv8n Edge Performance}
+The YOLOv8n model demonstrated exceptional performance on the Raspberry Pi:
+
+\begin{itemize}
+    \item \textbf{Precision:} Achieved 0.99 precision, indicating minimal false positives—critical for user trust
+    \item \textbf{Inference Speed:} 7.7ms inference time enables real-time processing at 130 FPS theoretical maximum
+    \item \textbf{F1-Score:} 0.933 shows excellent balance between precision and recall
+    \item \textbf{Trade-off:} Slightly lower recall (0.882) acceptable for edge deployment given the speed advantage
+\end{itemize}
+
+The high precision with minimal inference time makes YOLOv8n ideal for edge deployment, where computational resources are limited but accuracy remains paramount for practical deployment.
+
+\subsubsection{YOLOv8m and YOLOv8l Performance}
+Larger models trained on extensive datasets showed strong overall performance:
+
+\begin{itemize}
+    \item \textbf{YOLOv8m:} Good balance with F1-score of 0.927, but 257ms inference time limits real-time applications on edge devices
+    \item \textbf{YOLOv8l:} Highest recall (0.950) and F1-score (0.942), suitable for cloud-based processing where computational resources are abundant
+    \item \textbf{Use Case:} Better suited for offline analysis, batch processing, or cloud-hosted inference
+\end{itemize}
+
+\section{Deployment Environment Results}
+
+\subsection{Raspberry Pi Edge Device}
+
+Testing on Raspberry Pi 3B+ with YOLOv8n:
+
+\begin{itemize}
+    \item \textbf{Average Inference:} 7.7ms per frame
+    \item \textbf{CPU Usage:} ~65\% during inference
+    \item \textbf{Memory Usage:} ~450MB (model + application)
+    \item \textbf{Power Consumption:} ~3.5W during operation
+    \item \textbf{Frame Rate:} Consistent 1 FPS with 60-second reporting interval
+\end{itemize}
+
+\subsection{Cloud Server Performance}
+
+Google Cloud Platform c4-standard-2 instance:
+
+\begin{itemize}
+    \item \textbf{API Response Time:} <50ms for availability queries
+    \item \textbf{Concurrent Users:} Tested up to 100 simultaneous connections
+    \item \textbf{Database Operations:} Average query time 15ms
+    \item \textbf{Uptime:} 99.8\% over testing period
+\end{itemize}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.85\textwidth]{images/parklot-management-dashboard.png}
+  \caption{ParkLot Management Dashboard - comprehensive admin interface displaying real-time parking statistics, system health monitoring, and location management capabilities. The dashboard provides intuitive coordinate mapping tools for defining parking spot boundaries, API management for monitoring system endpoints and performance metrics, and integrated camera feed monitoring with real-time parking lot imagery for visual verification of detection accuracy.}
+  \label{fig:management_dashboard}
+\end{figure}
+
+\section{Real-World Validation}
+
+\subsection{NIT Hamirpur Campus Deployment}
+
+A proof-of-concept deployment was conducted at the NIT Hamirpur campus parking area:
+
+\begin{itemize}
+    \item \textbf{Dataset Collection:} 100 images captured from various parking spots using mobile camera
+    \item \textbf{Annotation:} Manual annotation of vehicles and parking spots in collected images
+    \item \textbf{Dataset Split:} Images divided into training and testing sets for model validation
+    \item \textbf{Model Training:} Fine-tuned YOLOv8n model on the custom annotated dataset
+\end{itemize}
+
+\subsection{Environmental Conditions}
+
+The system was tested under various conditions:
+
+\begin{table}[htbp]
+\centering
+\caption{Performance Under Different Environmental Conditions}
+\begin{tabular}{@{}lcc@{}}
+\toprule
+\textbf{Condition} & \textbf{Accuracy} & \textbf{Notes} \\ \midrule
+Clear Daylight & 98\% & Optimal performance \\
+Overcast/Cloudy & 96\% & Minimal degradation \\
+Dawn/Dusk & 93\% & Lower contrast affects detection \\
+Night (artificial light) & 91\% & Dependent on lighting quality \\
+Light Rain & 94\% & Some occlusion from droplets \\ \bottomrule
+\end{tabular}
+\end{table}
+
+\section{System Efficiency Metrics}
+
+\subsection{Cost Analysis}
+
+Per parking area deployment cost:
+
+\begin{itemize}
+    \item \textbf{Raspberry Pi 3B+:} Rs. 3,000
+    \item \textbf{Camera:} Rs. 2,000 (Logitech 720p)
+    \item \textbf{Power Supply \& Accessories:} Rs. 1,200
+    \item \textbf{Total Hardware:} Rs. 6,200 per location
+    \item \textbf{Cloud Hosting:} Rs. 4,000/month (shared across multiple locations)
+\end{itemize}
+
+Compared to sensor-based solutions (Rs. 4,000-8,000 per parking spot), ParkLot offers significant cost savings for multi-spot deployments.
+
+\subsection{Scalability Analysis}
+
+\begin{itemize}
+    \item \textbf{Single Camera Coverage:} 15-25 parking spots depending on layout
+    \item \textbf{Processing Capacity:} Each Raspberry Pi handles 4-5 camera streams
+    \item \textbf{Cloud Scalability:} Current infrastructure supports 50+ locations
+    \item \textbf{Database Growth:} Linear scaling with number of locations
+\end{itemize}
+
+\section{User Experience Evaluation}
+
+\subsection{Mobile Application Metrics}
+
+\begin{itemize}
+    \item \textbf{Search Response Time:} <2 seconds for nearby parking query
+    \item \textbf{Data Freshness:} Maximum 60-second latency (configurable)
+    \item \textbf{UI Responsiveness:} Smooth navigation with minimal lag
+    \item \textbf{Offline Capability:} Cached data available when network unavailable
+\end{itemize}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.75\textwidth]{images/frontend.png}
+  \caption{ParkLot mobile application interface - intuitive user interface showing nearby parking locations with real-time availability status and navigation options.}
+  \label{fig:frontend}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.75\textwidth]{images/frontend-1.png}
+  \caption{ParkLot mobile application features - detailed view of parking location information, spot availability visualization, parking reservation system, and user-friendly navigation controls.}
+  \label{fig:frontend1}
+\end{figure}
+
+\section{Comparative Analysis}
+
+\subsection{Visual Detection Results}
+
+Figures \ref{fig:visual1} and \ref{fig:visual2} demonstrate the YOLOv8n model's detection capabilities on real NITH campus parking images under different conditions.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.85\textwidth]{images/visual1.png}
+  \caption{YOLOv8n detection results on NITH campus parking area - showing accurate vehicle detection with bounding boxes under optimal lighting conditions.}
+  \label{fig:visual1}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.85\textwidth]{images/visual2.png}
+  \caption{YOLOv8n detection in varying conditions - demonstrating model robustness across different lighting and parking configurations at NIT Hamirpur campus.}
+  \label{fig:visual2}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.85\textwidth]{images/edge-processed-yolov8n.png}
+  \caption{Edge deployment performance comparison (Part 1) - YOLOv8n base model performance showing inference speed and detection accuracy metrics on edge devices.}
+  \label{fig:edge_comparison_1}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.85\textwidth]{images/edge-processed-yolov8n-finetuned.png}
+  \caption{Edge deployment performance comparison (Part 2) - Fine-tuned YOLOv8n model demonstrating improved detection capabilities after training on custom NIT Hamirpur dataset, with comparative analysis of accuracy and speed trade-offs.}
+  \label{fig:edge_comparison_2}
+\end{figure}
+
+\section{Limitations and Observations}
+
+\subsection{Identified Challenges}
+
+\begin{itemize}
+    \item \textbf{Occlusions:} Large vehicles (buses, trucks) can partially obscure adjacent spots
+    \item \textbf{Irregular Layouts:} Non-standard parking arrangements require custom grid configuration
+    \item \textbf{Lighting Variations:} Significant performance degradation in very low light without artificial illumination
+    \item \textbf{Vehicle Type Diversity:} Motorcycles and bicycles sometimes missed due to size
+\end{itemize}
+
+\subsection{Mitigation Strategies}
+
+\begin{itemize}
+    \item \textbf{Camera Placement:} Elevated mounting reduces occlusion issues
+    \item \textbf{Adaptive Thresholds:} Configurable confidence thresholds per deployment
+    \item \textbf{Temporal Smoothing:} Multiple frame averaging to reduce false detections
+    \item \textbf{Night Vision:} Infrared cameras for 24/7 operation consideration
+\end{itemize}

@@ -1,0 +1,180 @@
+\chapter{Methodology}
+\noindent\rule{\linewidth}{2pt}
+
+\section{Dataset Preparation}
+
+The quality and diversity of training data directly impact model performance. We utilized three primary sources for training and testing, each offering distinct characteristics suitable for different aspects of parking detection.
+
+\subsection{Dataset Sources}
+
+\subsubsection{CNRPark-Ext Dataset}
+\begin{itemize}
+    \item \textbf{Origin:} University of Pisa, Italy
+    \item \textbf{Size:} Approximately 150,000 labeled patches
+    \item \textbf{View:} Side view with variable angles
+    \item \textbf{Conditions:} Multiple weather conditions (sunny, rainy, overcast)
+    \item \textbf{Time Coverage:} Different times of day including dawn and dusk
+    \item \textbf{Characteristics:} Provides robust variation for model generalization
+\end{itemize}
+
+\subsubsection{PKLot Dataset}
+\begin{itemize}
+    \item \textbf{Origin:} Federal University of Paraná, Curitiba, Brazil
+    \item \textbf{Size:} Approximately 695,900 labeled patches
+    \item \textbf{View:} Elevated/aerial perspective
+    \item \textbf{Parking Lots:} Two main locations (PUCPR and UFPR)
+    \item \textbf{Weather Variations:} Sunny and cloudy conditions
+    \item \textbf{Characteristics:} Large-scale dataset for robust training
+\end{itemize}
+
+\subsubsection{Custom NITH Dataset}
+\begin{itemize}
+    \item \textbf{Origin:} NIT Hamirpur campus parking areas
+    \item \textbf{Size:} Custom collection for local validation
+    \item \textbf{View:} Aerial view from mounted cameras
+    \item \textbf{Purpose:} Fine-tuning for specific deployment environment
+    \item \textbf{Characteristics:} Captures local vehicle types, parking patterns, and lighting conditions
+\end{itemize}
+
+\subsection{Data Processing Pipeline}
+
+\subsubsection{Storage Optimization}
+Due to the large scale of the datasets, we employed symbolic linking to optimize storage:
+\begin{itemize}
+    \item Created symbolic links for approximately 140,000 images
+    \item Avoided data duplication across training/validation splits
+    \item Reduced storage requirements by approximately 60\%
+    \item Maintained data integrity and accessibility
+\end{itemize}
+
+\subsubsection{Label Normalization}
+The original datasets used multiple classes for occupancy status (occupied, vacant, partially visible). For our unified approach:
+\begin{itemize}
+    \item Merged all occupancy classes into single 'Car' class (ID: 0)
+    \item Preserved bounding box coordinates from original annotations
+    \item Converted annotations to YOLO format (normalized coordinates)
+    \item Validated label consistency across datasets
+\end{itemize}
+
+\subsubsection{Dataset Configuration}
+Generated \texttt{data.yaml} configuration file defining:
+\begin{verbatim}
+path: /path/to/dataset
+train: images/train
+val: images/val
+nc: 1
+names: ['Car']
+\end{verbatim}
+
+\section{Model Selection and Training}
+
+\subsection{YOLO Model Variants}
+We evaluated three variants of YOLOv8, each offering different trade-offs between accuracy and computational efficiency:
+
+\begin{itemize}
+    \item \textbf{YOLOv8n (Nano):} Lightweight model optimized for edge devices
+    \item \textbf{YOLOv8m (Medium):} Balanced accuracy and speed
+    \item \textbf{YOLOv8l (Large):} High accuracy with increased computational requirements
+\end{itemize}
+
+\subsection{Training Configuration}
+
+\subsubsection{YOLOv8m and YOLOv8l Training}
+Larger models were trained on CNRPark-Ext and PKLot datasets:
+
+\begin{itemize}
+    \item \textbf{Hardware:} NVIDIA P100 (Kaggle), RTX 4060
+    \item \textbf{Batch Size:} 16 (adjusted based on GPU memory)
+    \item \textbf{Epochs:} 100 (with early stopping)
+    \item \textbf{Image Size:} 640×640 pixels
+    \item \textbf{Optimizer:} SGD with momentum (0.937)
+    \item \textbf{Learning Rate:} Initial 0.01 with cosine decay
+    \item \textbf{Augmentation:} Mosaic, rotation, scaling, flip
+\end{itemize}
+
+\subsubsection{YOLOv8n Edge Device Training}
+The lightweight model was specifically fine-tuned for Raspberry Pi deployment:
+
+\begin{itemize}
+    \item \textbf{Base Model:} Pre-trained YOLOv8n from Ultralytics
+    \item \textbf{Fine-tuning Dataset:} Custom NITH dataset (local conditions)
+    \item \textbf{Training Hardware:} RTX 3050
+    \item \textbf{Epochs:} 50 (optimized for local features)
+    \item \textbf{Image Size:} 416×416 pixels (reduced for edge performance)
+    \item \textbf{Optimization:} Model pruning and quantization considered
+\end{itemize}
+
+\subsection{Training Strategy}
+
+\subsubsection{Transfer Learning}
+All models leveraged pre-trained weights from COCO dataset:
+\begin{itemize}
+    \item Retained low-level feature extractors
+    \item Fine-tuned detection head for parking-specific features
+    \item Reduced training time and improved generalization
+\end{itemize}
+
+\subsubsection{Data Augmentation}
+Applied extensive augmentation to improve robustness:
+\begin{itemize}
+    \item \textbf{Geometric:} Random rotation (±15°), scaling (0.5-1.5×), flipping
+    \item \textbf{Color:} HSV adjustment, brightness/contrast variation
+    \item \textbf{Mosaic:} Combined multiple images to simulate occlusions
+    \item \textbf{Cutout:} Random rectangular masking to handle partial visibility
+\end{itemize}
+
+\subsection{Validation Strategy}
+
+\begin{itemize}
+    \item \textbf{Split Ratio:} 80\% training, 20\% validation
+    \item \textbf{Metrics:} Precision, Recall, mAP@0.5, mAP@0.5:0.95
+    \item \textbf{Validation Frequency:} Every 5 epochs
+    \item \textbf{Early Stopping:} Patience of 10 epochs based on mAP
+\end{itemize}
+
+\section{Model Deployment}
+
+\subsection{Edge Device Optimization}
+
+For Raspberry Pi deployment, several optimizations were applied:
+
+\begin{itemize}
+    \item \textbf{Model Export:} Converted to ONNX format for optimized inference
+    \item \textbf{Precision:} FP16 quantization to reduce memory footprint
+    \item \textbf{Batch Processing:} Single-image inference to minimize latency
+    \item \textbf{Post-processing:} Non-Maximum Suppression (NMS) threshold tuning
+\end{itemize}
+
+\subsection{Inference Pipeline}
+
+\begin{enumerate}
+    \item Capture frame from camera (720p resolution)
+    \item Resize to model input size (416×416 for edge, 640×640 for cloud)
+    \item Normalize pixel values to [0,1]
+    \item Run inference through YOLO model
+    \item Apply NMS to filter overlapping detections
+    \item Map detections to parking grid layout
+    \item Calculate occupancy percentage
+    \item Transmit results to cloud API
+\end{enumerate}
+
+\section{System Integration}
+
+\subsection{Edge-to-Cloud Communication}
+
+\begin{itemize}
+    \item \textbf{Protocol:} RESTful API over HTTPS
+    \item \textbf{Data Format:} JSON payload with detection results
+    \item \textbf{Update Frequency:} Configurable interval (default: 60 seconds)
+    \item \textbf{Error Handling:} Retry mechanism with exponential backoff
+    \item \textbf{Offline Mode:} Local caching when network unavailable
+\end{itemize}
+
+\subsection{Cloud Processing}
+
+\begin{itemize}
+    \item \textbf{Data Validation:} Schema validation of incoming data
+    \item \textbf{Database Updates:} Atomic operations for consistency
+    \item \textbf{Historical Logging:} Occupancy trends stored for analytics
+    \item \textbf{API Response:} Real-time availability served to users
+\end{itemize}

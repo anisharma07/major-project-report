@@ -1,0 +1,35 @@
+\pagebreak
+\phantomsection
+\cleardoublepage
+
+
+
+\addcontentsline{toc}{chapter}{Abstract}
+
+\begin{center}
+{\bf \Huge Abstract }\\
+\par\vspace{5mm}
+\end{center}
+
+
+\textit{\noindent Efficient parking management is a critical component of smart cities, as studies indicate that approximately 30\% of urban traffic is caused by drivers searching for parking, leading to increased carbon footprints and fuel consumption. While CCTV cameras are extensively deployed in parking facilities, they remain underutilized for intelligent traffic management, serving primarily passive monitoring and security purposes. This presents a significant opportunity to leverage existing infrastructure for smart parking solutions.}\\[0.1in]
+
+\noindent This project, \textbf{ParkLot}, proposes a cost-efficient, centralized parking solution that leverages existing CCTV networks to detect parking occupancy without requiring expensive new sensors. The proposed system utilizes a hybrid architecture combining edge computing (Raspberry Pi) and cloud services (Google Cloud Platform). We fine-tuned multiple object detection models from the YOLO family (YOLOv8n, YOLOv8m, YOLOv8l) on aerial datasets such as CNRPark-Ext and PKLot, as well as a custom dataset from the NIT Hamirpur campus.\\[0.1in]
+
+\noindent Our results demonstrate that the YOLOv8n model running on edge devices achieves a precision of 0.99 and an inference time of 7.7 ms, offering a viable real-time solution. The larger models (YOLOv8m and YOLOv8l) trained on extensive datasets achieved F1-scores of 0.927 and 0.942 respectively, demonstrating robust performance across diverse conditions. The system is integrated with a user-friendly mobile application and a web dashboard to guide drivers to available spots in real-time.\\[0.1in]
+
+\noindent This project's contributions are twofold: 
+\begin{enumerate}
+    \item Development of a cost-effective parking detection system using fine-tuned YOLO models that achieves high precision (0.99) with minimal inference time (7.7ms) on edge devices, enabling real-time occupancy detection.
+    \item Creation of a hybrid edge-cloud architecture that leverages existing CCTV infrastructure, eliminating the need for expensive sensor installations while maintaining scalability and reliability across diverse parking environments.
+\end{enumerate}
+
+\vspace{2cm}
+
+\noindent\rule{\linewidth}{1pt} 
+\begin{keywords}
+\centering
+        Smart Parking, YOLO, Computer Vision, Vehicle Detection, AI, Urban Mobility, IoT
+\end{keywords}
+\noindent\rule{\linewidth}{1pt} 
+\newpage
